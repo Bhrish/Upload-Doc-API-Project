@@ -1,0 +1,16 @@
+[
+  {
+    "Fullname": "Dhanushree A G",
+    "Mobile": "6361463979",
+    "Username": "dhanushree_bhrish",
+    "Password": "$2a$12$3PxKk/sq/zltOSTBHPFKkOSvXPyoIymfZ/S2EAPz6Y8xGRQCfo6Pa",
+    "Role": "Employee"
+  },
+  {
+    "Fullname": "Likhitha Lakshmi",
+    "Mobile": "9900303090",
+    "Username": "likhitha_archi",
+    "Password": "$2a$12$uhlv2bLdKGqW7eowsbf0dOfCAzzwB3mxbt3mRIDiHAc2DJU9HzNVu",
+    "Role": "Visitor"
+  }
+]

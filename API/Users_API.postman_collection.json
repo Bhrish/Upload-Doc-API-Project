@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "54099678-8759-464b-a0b7-38e70b0bfeb7",
+		"name": "Users_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34074593"
+	},
+	"item": [
+		{
+			"name": "RegisterUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "BhrishAuthorization",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Fullname\": \"Likhitha Lakshmi\",\r\n    \"Email\": \"likhitha@gmail.com\",\r\n    \"Mobile\": \"9900303090\",\r\n    \"Username\": \"likhitha_archi\",\r\n    \"Password\": \"likhitha12345\",\r\n    \"Role\": \"Visitor\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/registerUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"registerUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetchUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000"
+				}
+			},
+			"response": []
+		}
+	]
+}
