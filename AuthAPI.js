@@ -86,7 +86,7 @@ const verifyUserCredentials = (req, res, next)=>{
         if(userDetail.Role === "Employee"){
             const access_token = generateToken(32);
             const currentTime = Date.now();
-            const token_expiration = currentTime + (2 * 60 * 60 * 1000);
+            const token_expiration = currentTime + (10 * 60 * 1000);
             const tokenData = {"token": access_token, "expiresAt": token_expiration, "userDetails": userDetail};
 
             const TokenStatus = addTokens(tokenData);
@@ -122,19 +122,18 @@ const authorizeUser = (req, res, next) => {
     console.log('tokenUserFound:', tokenUserFound)
     if(tokenUserFound){
         console.log('inside if condn going to next');
+        const currentTimestamp = Date.now();
+        const ExpireTime = tokenUserFound.expiresAt;
+        console.log('Expire time::', ExpireTime)
+        if(currentTimestamp == ExpireTime || currentTimestamp > ExpireTime){
+            return res.status(400).json({message: 'Token is expired'});
+        }
+        console.log('going next');
         next();
     }else{
         console.log('inside else');
         return res.status(400).json({ message: 'Token is not valid' });
     }
-
-    // const currentTimestamp = Date.now();
-    // const ExpireTime = tokenUserFound.expiresAt;
-    // if(currentTimestamp == ExpireTime || currentTimestamp > ExpireTime){
-    //     return res.status(400).json({message: 'Token is expired'});
-    // }
-    // console.log('going next');
-    // next();
 };  
 
  
