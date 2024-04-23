@@ -55,6 +55,43 @@ function addTokens(tokenData) {
     return "success";
 }
 
+function updateTokens(tokenToUpdate, newToken, newExpire){
+    const tokenList = getTokens();
+    const tokenIndex = tokenList.findIndex(t => t.token === tokenToUpdate);
+
+    if (tokenIndex !== -1) {
+        tokenList[tokenIndex].token = newToken;
+        tokenList[tokenIndex].expiresAt = newExpire;
+        saveTokens(tokenList);
+        
+        return "Updated";
+    }else{
+        return res.send("Couldn't update the token refreshed. Please login to get new access token");
+    }
+}
+
+// Token refresh function
+const refreshAccessToken = (refreshToken) => {
+    console.log('refreshToken::', refreshToken);
+    // Validate refresh token and generate new access token
+    const getRefreshAccessToken = refreshToken.refreshAccessToken;
+    console.log('getRefreshAccessToken::', getRefreshAccessToken);
+    const getExpireTime = refreshToken.expiresIn;
+    console.log('getExpireTime::', getExpireTime);
+    const currentTimestamp = Date.now();
+
+    //Check if the refresh token is valid
+    if(currentTimestamp == getExpireTime || currentTimestamp > getExpireTime){
+        return res.status(400).json({message: 'Token is expired'});
+    }
+    const newAccessToken = generateToken(32); 
+    console.log('newAccessToken::', newAccessToken);
+    const expiresIn = currentTimestamp + (2 * 60 * 1000);
+    console.log('expiresIn::', expiresIn);
+
+    return { newAccessToken, expiresIn };
+};
+
 
 //Hash function
 async function hashPassword(password) {
@@ -68,4 +105,4 @@ async function hashPassword(password) {
     }
 }
 
-module.exports = {hashPassword, getUsers, getTokens, addUsers, addTokens, generateToken};
+module.exports = {hashPassword, getUsers, getTokens, addUsers, addTokens, generateToken, refreshAccessToken, updateTokens};

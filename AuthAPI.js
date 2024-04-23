@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 let users = require('./users.json');
 let tokens = require('./tokens.json');
-const {addTokens, addUsers, generateToken, getUsers, getTokens}  = require('./HandleFuncs');
+const {addTokens, addUsers, generateToken, getUsers, getTokens, refreshAccessToken, updateTokens}  = require('./HandleFuncs');
 const bcrypt = require('bcryptjs');
 
 const app = express();
@@ -84,10 +84,14 @@ const verifyUserCredentials = (req, res, next)=>{
         return res.status(400).send(`Invalid credentials.`)
     }else{
         if(userDetail.Role === "Employee"){
+            //Access Token
             const access_token = generateToken(32);
             const currentTime = Date.now();
-            const token_expiration = currentTime + (10 * 60 * 1000);
-            const tokenData = {"token": access_token, "expiresAt": token_expiration, "userDetails": userDetail};
+            const token_expiration = currentTime + (2 * 60 * 1000);
+            //Refresh token
+            const refresh_token = generateToken(32);
+            const refreshToken_expiration = currentTime + (7 * 24 * 60 * 60 * 1000);;
+            const tokenData = {"token": access_token, "expiresAt": token_expiration, "userDetails": userDetail, "refreshToken": {"refreshAccessToken": refresh_token, "expiresIn": refreshToken_expiration}};
 
             const TokenStatus = addTokens(tokenData);
             if(TokenStatus == "success"){
@@ -126,7 +130,22 @@ const authorizeUser = (req, res, next) => {
         const ExpireTime = tokenUserFound.expiresAt;
         console.log('Expire time::', ExpireTime)
         if(currentTimestamp == ExpireTime || currentTimestamp > ExpireTime){
-            return res.status(400).json({message: 'Token is expired'});
+            //return res.status(400).json({message: 'Token is expired'});
+
+            //Calling Token Refresh Function
+            const checkToken = tokenUserFound.token;
+            const {newAccessToken, expiresIn} = refreshAccessToken(tokenUserFound.refreshToken);
+            console.log('In Main newAccessToken::', newAccessToken);
+            console.log('In Main expiresIn::', expiresIn);
+            //tokenUserFound.token = newAccessToken;
+            //tokenUserFound.expiresAt = expiresIn;
+            const updateNewUserToken = updateTokens(checkToken,newAccessToken, expiresIn);
+            if(updateNewUserToken == "Updated"){
+                console.log('Updated tokenUserFound::', tokenUserFound);
+            }else{
+                console.log('Else Updated tokenUserFound::', tokenUserFound);
+            }
+
         }
         console.log('going next');
         next();
