@@ -7,17 +7,20 @@ const bcrypt = require('bcryptjs');
 
 const app = express();
 app.use(bodyParser.json());
-const PORT = 9000;
+const PORT = process.env.PORT_NUMBER || 9000;
+
+console.log("auth checked");
 
 //Displays Users List 
 app.get('/', (req,res)=>{
     //const userList = getUsers();
     const userList = users;
-    console.log('userlist: ', userList);
-    if(!userList){
-        res.json({"message":"Unable to fetch the user list"});
-    }else{
+    
+    if(userList){
+        console.log('userlist: ', userList);
         res.json({"Users": userList});
+    }else{
+        res.json({"message":"Unable to fetch the user list"});
     }
     
 });
@@ -30,6 +33,9 @@ const adminAuthorize = (req,res,next)=>{
     console.log(req.headers.authorization);
     const authCode = req.headers.authorization;
     console.log(`authCode: ${authCode}`)
+    if(authCode === undefined || authCode == ''){
+        return res.send('Authorization Code is required');
+    }
     const adminAuthCode = adminCode;
     // const salt = bcrypt.genSaltSync(10);
     // const hashedUserAuthcode = bcrypt.hashSync(authCode, salt);
@@ -41,7 +47,7 @@ const adminAuthorize = (req,res,next)=>{
     if(authCodeMatch){
         next();
     }else{
-        return res.status(401).json({ message: 'Authorization Code is required' });
+        return res.send('Authorization Code is does not match');
     }
 };
 
@@ -67,9 +73,9 @@ app.post('/registerUser',adminAuthorize, (req,res)=>{
     const userRegisterStatus = addUsers(userData);
     console.log(`userRegisterStatus: ${userRegisterStatus} `);
     if(userRegisterStatus == "Success"){
-        res.status(200).json({"message":"User has been successfully added"})
+        res.json({"message":"User has been successfully added"})
     }else{
-        res.status(400).json({"message":"Unable to add the user"})
+        res.json({"message":"Unable to add the user"})
     }
 });
 
@@ -100,64 +106,104 @@ const verifyUserCredentials = (req, res, next)=>{
                 next();
             }
         }else{
-            return res.status(400).send(`Access Denied Only Employee of the organization can access`);
+            return res.send(`Access Denied Only Employee of the organization can access`);
         }
     }
 };
 
 //Route for authentication
 app.post('/authenticate',verifyUserCredentials, (req, res)=>{
-    res.status(200).json({"message": "User has been verified.", "Access-Token":req.accessToken,"Expires-At": req.expireTime});
+    res.json({"message": "User has been verified.", "Access-Token":req.accessToken,"Expires-At": req.expireTime});
 });
 
 
   
-//Authorizating the Upload Document API
-const authorizeUser = (req, res, next) => {
-    const token = req.headers.authorization;
-    console.log('token:', token)
-    if (!token) {
-        return res.status(401).json({ message: 'Access token is required' });
-    }
+// //Authorizating the Upload Document API
+// const authorizeUser = (req, res, next) => {
+//     const token = req.headers.authorization;
+//     console.log('token:', token)
+//     if (!token || token.trim() == '') {
+//         return res.send('Access token is required');
+//     }
 
-    const tokenList = getTokens();
-    console.log('tokenList:', tokenList)
-    const tokenUserFound = tokenList.find(eachToken => eachToken.token === token);
-    console.log('tokenUserFound:', tokenUserFound)
-    if(tokenUserFound){
-        console.log('inside if condn going to next');
-        const currentTimestamp = Date.now();
-        const ExpireTime = tokenUserFound.expiresAt;
-        console.log('Expire time::', ExpireTime)
-        if(currentTimestamp == ExpireTime || currentTimestamp > ExpireTime){
-            //return res.status(400).json({message: 'Token is expired'});
+//     const tokenList = getTokens();
+//     console.log('tokenList:', tokenList)
+//     const tokenUserFound = tokenList.find(eachToken => eachToken.token === token);
+//     console.log('tokenUserFound:', tokenUserFound)
+//     if(tokenUserFound){
+//         console.log('inside if condn going to next');
+//         const currentTimestamp = Date.now();
+//         const ExpireTime = tokenUserFound.expiresAt;
+//         console.log('Expire time::', ExpireTime)
+//         if(currentTimestamp == ExpireTime || currentTimestamp > ExpireTime){
+//             //return res.status(400).json({message: 'Token is expired'});
 
-            //Calling Token Refresh Function
-            const checkToken = tokenUserFound.token;
-            const {newAccessToken, expiresIn} = refreshAccessToken(tokenUserFound.refreshToken);
-            console.log('In Main newAccessToken::', newAccessToken);
-            console.log('In Main expiresIn::', expiresIn);
-            //tokenUserFound.token = newAccessToken;
-            //tokenUserFound.expiresAt = expiresIn;
-            const updateNewUserToken = updateTokens(checkToken,newAccessToken, expiresIn);
-            if(updateNewUserToken == "Updated"){
-                console.log('Updated tokenUserFound::', tokenUserFound);
-            }else{
-                console.log('Else Updated tokenUserFound::', tokenUserFound);
-            }
+//             //Calling Token Refresh Function
+//             const checkToken = tokenUserFound.token;
+//             const {newAccessToken, expiresIn} = refreshAccessToken(tokenUserFound.refreshToken);
+//             console.log('In Main newAccessToken::', newAccessToken);
+//             console.log('In Main expiresIn::', expiresIn);
+//             //tokenUserFound.token = newAccessToken;
+//             //tokenUserFound.expiresAt = expiresIn;
+//             const updateNewUserToken = updateTokens(checkToken,newAccessToken, expiresIn);
+//             if(updateNewUserToken == "Updated"){
+//                 console.log('Updated tokenUserFound::', tokenUserFound);
+//             }else{
+//                 console.log('Else Updated tokenUserFound::', tokenUserFound);
+//             }
 
-        }
-        console.log('going next');
-        next();
-    }else{
-        console.log('inside else');
-        return res.status(400).json({ message: 'Token is not valid' });
-    }
-};  
+//         }
+//         console.log('going next');
+//         req.token = true;
+//         next();
+//     }else{
+//         console.log('inside else');
+//         req.token = false;
+//         return res.send('Token is not valid');
+//     }
+// }; 
 
+// //Authorizating the Upload Document API
+// function authorizeUser(authToken){
+//     const token = authToken;
+//     const tokenList = getTokens();
+//     console.log('tokenList:', tokenList)
+//     const tokenUserFound = tokenList.find(eachToken => eachToken.token === token);
+//     console.log('tokenUserFound:', tokenUserFound)
+//     if(tokenUserFound){
+//         console.log('inside if condn going to next');
+//         const currentTimestamp = Date.now();
+//         const ExpireTime = tokenUserFound.expiresAt;
+//         console.log('Expire time::', ExpireTime)
+//         if(currentTimestamp == ExpireTime || currentTimestamp > ExpireTime){
+//             //return res.status(400).json({message: 'Token is expired'});
+
+//             //Calling Token Refresh Function
+//             const checkToken = tokenUserFound.token;
+//             const {newAccessToken, expiresIn} = refreshAccessToken(tokenUserFound.refreshToken);
+//             console.log('In Main newAccessToken::', newAccessToken);
+//             console.log('In Main expiresIn::', expiresIn);
+//             //tokenUserFound.token = newAccessToken;
+//             //tokenUserFound.expiresAt = expiresIn;
+//             const updateNewUserToken = updateTokens(checkToken,newAccessToken, expiresIn);
+//             if(updateNewUserToken == "Updated"){
+//                 console.log('Updated tokenUserFound::', tokenUserFound);
+//             }else{
+//                 console.log('Else Updated tokenUserFound::', tokenUserFound);
+//             }
+
+//         }
+//         console.log('going next');
+//         return "tokenPassed";
+//     }else{
+//         console.log('inside else');
+//         return "TokenNotValid";
+//     }
+// };
  
-app.listen(PORT, ()=>{
-    console.log(`Listening to the port : ${PORT}`);
-});
 
-module.exports = authorizeUser;
+// app.listen(PORT, ()=>{
+//     console.log(`Listening to the port : ${PORT}`);
+// });
+
+module.exports = app;

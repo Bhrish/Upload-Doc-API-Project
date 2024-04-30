@@ -21,6 +21,6 @@ EXPOSE 9000
 RUN mkdir /Uploads
 
 # Command to run both applications when the container starts
-CMD ["node", "uploadDocAPI.js", "&", "node", "AuthAPI.js"]
+CMD ["node", "uploadAPI.js", "&", "node", "AuthAPI.js"]
 #CMD node uploadDocAPI.js;
 #CMD node AuthAPI.js;

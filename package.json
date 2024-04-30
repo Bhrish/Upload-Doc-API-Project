@@ -10,6 +10,7 @@
     "supertest": "^6.3.4"
   },
   "scripts": {
-    "test": "nodemon expiring.js"
+    "start": "node test.js",
+    "test": "jest uploadDocAPI.test.js"
   }
 }
