@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "express": "^4.19.2"
   },
   "devDependencies": {
+    "bcryptjs": "^2.4.3",
     "jest": "^29.7.0",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.0",

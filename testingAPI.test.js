@@ -148,13 +148,42 @@ describe('User Authentication', () => {
                 expiresIn: 1714985946256,
             }
         },
+        {
+            token: 'expired token',
+            expiresAt: 1714381266256,
+            userDetails: {
+                Fullname: 'Dhanushree A G',
+                Mobile: '6361463979',
+                Username: 'dhanushree_bhrish',
+                Password: '$2a$12$3PxKk/sq/zltOSTBHPFKkOSvXPyoIymfZ/S2EAPz6Y8xGRQCfo6Pa',
+                Role: 'Employee',
+            },
+            refreshToken: {
+                refreshAccessToken: 'expired token',
+                expiresIn: 1714985946256,
+            }
+        }
     ]
 });
 
-refreshAccessToken =  jest.fn(() => ({
-   newAccessToken: 'newToken',
-   expiresIn: Date.now() + 100000,
-}));
+refreshAccessToken =  jest.fn((refreshToken) => {
+	    console.log('refreshToken:: ', refreshToken);
+	    // Validate refresh token and generate new access token
+    	const getRefreshAccessToken = refreshToken.refreshAccessToken;
+    	console.log('getRefreshAccessToken::', getRefreshAccessToken);
+    
+    	//Check if the refresh token is valid
+    	if(getRefreshAccessToken === "expired token"){
+        return res.status(400).send('Token is expired');
+    	}
+    	const newAccessToken = 'valid token'; 
+    	console.log('newAccessToken::', newAccessToken);
+    	const expiresIn = currentTimestamp + (2 * 60 * 1000);
+    	console.log('expiresIn::', expiresIn);
+
+    	return { newAccessToken, expiresIn };
+
+});
 
 
 updateTokens = jest.fn(() => 'Updated');
@@ -205,7 +234,7 @@ describe('POST /uploads', ()=>{
         const response = await request(router)
         .post('/uploads')
         .attach('file','./abc.txt')
-        .set('Authorization','im6cUMQF9yI1sx5uXsSWWbQ1uEvzKlRC')
+        .set('Authorization','valid token')
 
         expect(response.text).toBe('File uploaded successfully: abc.txt');
         expect(response.statusCode).toBe(200);
@@ -225,7 +254,7 @@ describe('POST /uploads', ()=>{
         const response = await request(router)
         .post('/uploads')
         .attach()
-        .set('Authorization','V1sCcLtI8Yp0VxfSkF2Xetktp7I64stG')
+        .set('Authorization','valid token')
 
         expect(response.text).toBe('Required the file to be uploaded');
         expect(response.statusCode).toBe(400);
@@ -274,7 +303,7 @@ describe('POST /uploads', ()=>{
         const response = await request(router)
         .post('/uploads')
         .attach('file','./abc.txt')
-        .set('Authorization','expired')
+        .set('Authorization','expired token')
 
         expect(response.text).toBe('Token is expired');
         } catch (error) {
