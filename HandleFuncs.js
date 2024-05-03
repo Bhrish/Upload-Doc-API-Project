@@ -79,12 +79,12 @@ const refreshAccessToken = (refreshToken) => {
     const getExpireTime = refreshToken.expiresIn;
     console.log('getExpireTime::', getExpireTime);
     
-    
+
     const currentTimestamp = Date.now();
 
     //Check if the refresh token is valid
     if(currentTimestamp == getExpireTime || currentTimestamp > getExpireTime){
-        return res.status(400).json({message: 'Token is expired'});
+        return res.send('Token is expired');
     }
     const newAccessToken = generateToken(32); 
     console.log('newAccessToken::', newAccessToken);
