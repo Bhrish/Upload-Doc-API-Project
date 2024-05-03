@@ -16,7 +16,6 @@
     "supertest": "^6.3.4"
   },
   "scripts": {
-    "start": "node test.js",
     "test": "jest testingAPI.test.js"
   }
 }

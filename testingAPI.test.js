@@ -318,7 +318,7 @@ describe('POST /uploads', ()=>{
             console.error(err);
             return done(err);
         }
-        console.log('Server closed');
+        //console.log('Server closed');
         
     });
     server2.close((err) => {
@@ -326,7 +326,7 @@ describe('POST /uploads', ()=>{
                 console.error(err);
                 return done(err);
             }
-            console.log('Server 2 closed');
+           // console.log('Server 2 closed');
         });
         done();
 });
