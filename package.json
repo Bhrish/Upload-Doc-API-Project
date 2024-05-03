@@ -11,6 +11,6 @@
   },
   "scripts": {
     "start": "node test.js",
-    "test": "jest uploadDocAPI.test.js"
+    "test": "jest testingAPI.test.js"
   }
 }
