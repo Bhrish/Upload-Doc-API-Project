@@ -299,20 +299,14 @@ describe('POST /uploads', ()=>{
     });
 
     it('Test token expired', async()=>{
-        try{
+     
         const response = await request(router)
         .post('/uploads')
         .attach('file','./abc.txt')
         .set('Authorization','expired token')
 
         expect(response.text).toBe('Token is expired');
-        } catch (error) {
-            if (error.code === 'ECONNRESET') {
-              console.log('Connection reset, retrying...');
-            } else {
-              throw error;
-            }
-          }
+        
     });
 
 
