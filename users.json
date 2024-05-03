@@ -52,5 +52,21 @@
     "Username": "johndoe",
     "Password": "$2a$12$.qbqJPLYyXVOLjRKLb.ZduiFMgMWsfQs1TVtIrUZMRsYSisQs/ds2",
     "Role": "Employee"
+  },
+  {
+    "Fullname": "John Doe",
+    "Email": "john@example.com",
+    "Mobile": "1234567890",
+    "Username": "johndoe",
+    "Password": "$2a$12$oGW5L6qnDeQ3sQGl70eXyOIJfgEzZ5ayAkNKXcbpwli976PGnY68W",
+    "Role": "Employee"
+  },
+  {
+    "Fullname": "John Doe",
+    "Email": "john@example.com",
+    "Mobile": "1234567890",
+    "Username": "johndoe",
+    "Password": "$2a$12$vHCppn9Yvu1xNi2Kep0uYO6o1AOa/Mc6wUMaaCvdE7d6DSIvzCEW2",
+    "Role": "Employee"
   }
 ]
