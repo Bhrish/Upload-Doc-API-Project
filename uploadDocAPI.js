@@ -34,12 +34,16 @@ const authorizeUser = (req, res, next) => {
 
             //Calling Token Refresh Function
             const checkToken = tokenUserFound.token;
-            const {newAccessToken, expiresIn} = refreshAccessToken(tokenUserFound.refreshToken);
-            console.log('In Main newAccessToken::', newAccessToken);
-            console.log('In Main expiresIn::', expiresIn);
-            //tokenUserFound.token = newAccessToken;
-            //tokenUserFound.expiresAt = expiresIn;
-            const updateNewUserToken = updateTokens(checkToken,newAccessToken, expiresIn);
+            const result = refreshAccessToken(tokenUserFound.refreshToken);
+
+            if(result.error){
+                res.send(result.error)
+            }
+            console.log('In Main newAccessToken::', result.newAccessToken);
+            console.log('In Main expiresIn::', result.expiresIn);
+            newToken = result.newAccessToken;
+            newExpire = result.expiresIn;
+            const updateNewUserToken = updateTokens(checkToken, newToken, newExpire);
             if(updateNewUserToken == "Updated"){
                 console.log('Updated tokenUserFound::', tokenUserFound);
             }else{
