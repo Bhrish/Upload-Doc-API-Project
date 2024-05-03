@@ -20,5 +20,37 @@
     "Username": "johndoe",
     "Password": "$2a$12$Q99LYF51/8OzZgCKUH6bnOoqPsd11Gj35CuAJSaajmfh1/PCzaR5a",
     "Role": "Employee"
+  },
+  {
+    "Fullname": "John Doe",
+    "Email": "john@example.com",
+    "Mobile": "1234567890",
+    "Username": "johndoe",
+    "Password": "$2a$12$WQdUIIf6IV0QK5GwTK62IOSsNrhVszLypgRdr74I3Xu/NcrXAJRj6",
+    "Role": "Employee"
+  },
+  {
+    "Fullname": "John Doe",
+    "Email": "john@example.com",
+    "Mobile": "1234567890",
+    "Username": "johndoe",
+    "Password": "$2a$12$Bnpa4ajg4A3VqJPoABGHt.17.q9NivlDP9LT2mphzO6oqNdEi6rfC",
+    "Role": "Employee"
+  },
+  {
+    "Fullname": "John Doe",
+    "Email": "john@example.com",
+    "Mobile": "1234567890",
+    "Username": "johndoe",
+    "Password": "$2a$12$eF0/z/vm2YKUToIb/Qy4ZObJWS/Buzv0oP6MpbJf3jjqcFgtpL4/G",
+    "Role": "Employee"
+  },
+  {
+    "Fullname": "John Doe",
+    "Email": "john@example.com",
+    "Mobile": "1234567890",
+    "Username": "johndoe",
+    "Password": "$2a$12$.qbqJPLYyXVOLjRKLb.ZduiFMgMWsfQs1TVtIrUZMRsYSisQs/ds2",
+    "Role": "Employee"
   }
 ]

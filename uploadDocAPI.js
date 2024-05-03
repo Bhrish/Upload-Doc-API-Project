@@ -37,7 +37,7 @@ const authorizeUser = (req, res, next) => {
             const result = refreshAccessToken(tokenUserFound.refreshToken);
 
             if(result.error){
-                res.send(result.error)
+                return res.send('Token is expired');
             }
             console.log('In Main newAccessToken::', result.newAccessToken);
             console.log('In Main expiresIn::', result.expiresIn);
