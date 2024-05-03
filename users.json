@@ -300,5 +300,13 @@
     "Username": "johndoe",
     "Password": "$2a$12$0PxUbf8efRGhg.rHIxm0WuN4tZmkd79Cni/Ai4wyxxPwWGxpva9Ei",
     "Role": "Employee"
+  },
+  {
+    "Fullname": "John Doe",
+    "Email": "john@example.com",
+    "Mobile": "1234567890",
+    "Username": "johndoe",
+    "Password": "$2a$12$veAFLlZKrl6DVAlk/AvqfOw0S9yx3H7HQ79jzUc/Dz3Obq8Vs1tpS",
+    "Role": "Employee"
   }
 ]

@@ -4,7 +4,7 @@ const app = require('./AuthAPI');
 const users = require('./users.json');
 let {addTokens, addUsers, generateToken, getUsers}  = require('./HandleFuncs');
 const tokens = require('./tokens.json');
-let authorizeUser = require('./AuthAPI');
+let authorizeUser = require('./uploadDocAPI');
 const fs = require('fs');
 
 beforeAll((done) => {
