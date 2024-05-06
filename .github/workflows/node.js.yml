@@ -40,4 +40,4 @@ jobs:
           registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-    - run: docker run -d -p 9100:9000 -p 5500:5500 -v C:\Users\HP\OneDrive\Documents\Dhanushree\API-Upload-Doc\Uploads:/app/Uploads -v C:\Users\HP\OneDrive\Documents\Dhanushree\API-Upload-Doc\tokens.json:/app/tokens.json -v C:\Users\HP\OneDrive\Documents\Dhanushree\API-Upload-Doc\users.json:/app/users.json  --name testing-container dhanushreebhrish/upload-file-api:latest
+    
